@@ -931,7 +931,7 @@ function twig_escape_filter(Twig_Environment $env, $string, $strategy = 'html', 
     if (!is_string($string)) {
         if (is_object($string) && method_exists($string, '__toString')) {
             $string = (string) $string;
-        } elseif (in_array($strategy, array('html', 'js', 'css', 'html_attr', 'url'))) {
+        } elseif (in_array($strategy, array('html', 'js', 'css', 'html_attr', 'html_attr_quoted', 'url'))) {
             return $string;
         }
     }
@@ -1041,6 +1041,9 @@ function twig_escape_filter(Twig_Environment $env, $string, $strategy = 'html', 
 
             return $string;
 
+        case 'html_attr_quoted':
+            return strtr($string, array("'" => '&#x27;', '"' => '&quot;');
+
         case 'url':
             if (PHP_VERSION_ID < 50300) {
                 return str_replace('%7E', '~', rawurlencode($string));
@@ -1059,7 +1062,7 @@ function twig_escape_filter(Twig_Environment $env, $string, $strategy = 'html', 
                 return call_user_func($escapers[$strategy], $env, $string, $charset);
             }
 
-            $validStrategies = implode(', ', array_merge(array('html', 'js', 'url', 'css', 'html_attr'), array_keys($escapers)));
+            $validStrategies = implode(', ', array_merge(array('html', 'js', 'url', 'css', 'html_attr', 'html_attr_quoted'), array_keys($escapers)));
 
             throw new Twig_Error_Runtime(sprintf('Invalid escaping strategy "%s" (valid ones: %s).', $strategy, $validStrategies));
     }
