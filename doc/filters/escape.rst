@@ -55,6 +55,8 @@ The ``escape`` filter supports the following escaping strategies:
 
 * ``html_attr``: escapes a string for the **HTML attribute** context.
 
+* ``html_attr_quoted``: escapes a string for the **HTML attribute** context in quotes (``"`` or ``'``).
+
 .. note::
 
     Internally, ``escape`` uses the PHP native `htmlspecialchars`_ function
